@@ -120,60 +120,26 @@ namespace SurfaceUnityLayer
             wfThread.IsBackground = true;
             System.Diagnostics.Debug.WriteLine("<sdebug> starting thread");
             wfThread.Start();
-
         }
 
         private void triggerDebugLog(string message)
         {
             if (wf != null)
             {
-                System.Diagnostics.Debug.WriteLine("######## " + message);
+                System.Diagnostics.Debug.WriteLine("<s> " + message);
                 //wf.axUnityWebPlayer1.SendMessage("surfaceControl", "surfaceFunction", message);
             }
         }
-
-        private void SurfaceWindow_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-        }
         
-
-        private void SurfaceWindow_TouchDown(object sender, TouchEventArgs e)
-        {
-        }
-
-        private void SurfaceWindow_TouchLeave(object sender, TouchEventArgs e)
-        {
-        }
-
-
-        private void scatterViewItem1_SizeChanged_1(object sender, SizeChangedEventArgs e)
-        {
-            //triggerDebugLog("size changed");
-            //triggerDebugLog(" ##new size : " + scatterViewItem1.Width + ", " + scatterViewItem1.Height);
-            //double newSize = scatterViewItem1.Width * scatterViewItem1.Height;
-            //if (newSize < oldSize)
-            //    wf.axUnityWebPlayer1.SendMessage("surfaceControl", "surfaceFunction", "decrease");
-            //else if (newSize > oldSize)
-            //    wf.axUnityWebPlayer1.SendMessage("surfaceControl", "surfaceFunction", "increase");
-
-            //oldSize = newSize;
-        }
-
-        private void scatterViewItem1_DragEnter(object sender, DragEventArgs e)
-        {
-        }
 
         private void SurfaceWindow_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
         {
             e.ManipulationContainer = this;
-
         }
 
         private void SurfaceWindow_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
-            Point p = e.ManipulationOrigin;
-            //triggerDebugLog("Manipulation started at " + p.ToString());
-
+            //Point p = e.ManipulationOrigin;
         }
 
         private void SurfaceWindow_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
@@ -182,37 +148,24 @@ namespace SurfaceUnityLayer
 
             if (e.DeltaManipulation.Scale.X != 1.0) { // scaled
                 string obj = "scale," +
-                    e.DeltaManipulation.Scale.X.ToString() + "," +
-                    e.DeltaManipulation.Scale.Y.ToString();
+                    (2.0 - e.DeltaManipulation.Scale.X).ToString() + "," +
+                    (e.DeltaManipulation.Scale.Y).ToString();
 
                 if(wf != null)
                     wf.axUnityWebPlayer1.SendMessage("surfaceControl", "surfaceFunction", obj);
 
                 
             }
-            else if (e.DeltaManipulation.Translation.X != 0 ||
+            else if (e.DeltaManipulation.Translation.X != 0 || // translation (translates to rotation in Unity app)
                 e.DeltaManipulation.Translation.Y != 0) {
                     string obj = "translate," +
-                        (e.DeltaManipulation.Translation.X*0.2).ToString() + "," +
-                        (e.DeltaManipulation.Translation.Y*-0.2).ToString();
+                        (e.DeltaManipulation.Translation.X*0.05).ToString() + "," +
+                        (e.DeltaManipulation.Translation.Y*-0.05).ToString();
                     if (wf != null)
                     {
                         wf.axUnityWebPlayer1.SendMessage("surfaceControl", "surfaceFunction", obj);
                     }
             }
-
-         //   triggerDebugLog("Manipulation Delta expansion - "+e.DeltaManipulation.Expansion.ToString());
-           // triggerDebugLog("Manipulation Delta scale - " + e.DeltaManipulation.Scale.ToString());
-            triggerDebugLog("Manipulation Delta translation - " + e.DeltaManipulation.Translation.ToString());
-        }
-
-        private void SurfaceWindow_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-        }
-
-        private void SurfaceWindow_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            triggerDebugLog("mouse up");
         }
 
         private void SurfaceWindow_TouchUp(object sender, TouchEventArgs e)
@@ -227,8 +180,9 @@ namespace SurfaceUnityLayer
             }
         }
 
-        
-
-
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
